@@ -10,20 +10,20 @@ const Contact = () => {
     {
       icon: Phone,
       title: "Call Us",
-      details: "+1 (555) 123-4567",
+      details: "(+254) 113 710584",
       subtitle: "Available 24/7"
     },
     {
       icon: Mail,
       title: "Email Us", 
-      details: "info@deventsolutions.com",
+      details: "lamakidesignsltd@gmail.com",
       subtitle: "Quick response guaranteed"
     },
     {
       icon: MapPin,
       title: "Visit Us",
-      details: "123 Event Plaza, Suite 100",
-      subtitle: "Downtown Business District"
+      details: "Nairobi, Ruai ",
+      subtitle: " 500M from Githunguri Junction"
     },
     {
       icon: Clock,
@@ -75,7 +75,7 @@ const Contact = () => {
               
               <div className="space-y-2">
                 <Label htmlFor="phone">Phone Number</Label>
-                <Input id="phone" type="tel" placeholder="+1 (555) 123-4567" />
+                <Input id="phone" type="tel" placeholder="(+254) 113 710584" />
               </div>
               
               <div className="space-y-2">
@@ -139,7 +139,7 @@ const Contact = () => {
                   <div className="w-3 h-3 bg-secondary rounded-full animate-pulse"></div>
                   <div>
                     <p className="font-medium text-foreground">24/7 Emergency Support</p>
-                    <p className="text-sm text-muted-foreground">For urgent event matters: +1 (555) 999-0000</p>
+                    <p className="text-sm text-muted-foreground">For urgent event matters: (+254) 113 710584</p>
                   </div>
                 </div>
               </CardContent>

@@ -95,19 +95,19 @@ const Footer = () => {
               <div className="flex items-start space-x-3">
                 <MapPin className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                 <div>
-                  <p className="text-background/80">123 Event Plaza, Suite 100</p>
+                  <p className="text-background/80">Nairobi, Ruai Githunguri Road</p>
                   <p className="text-background/80">Downtown Business District</p>
                 </div>
               </div>
               
               <div className="flex items-center space-x-3">
                 <Phone className="h-5 w-5 text-primary flex-shrink-0" />
-                <p className="text-background/80">+1 (555) 123-4567</p>
+                <p className="text-background/80">(+254) 113 710584</p>
               </div>
               
               <div className="flex items-center space-x-3">
                 <Mail className="h-5 w-5 text-primary flex-shrink-0" />
-                <p className="text-background/80">info@deventsolutions.com</p>
+                <p className="text-background/80">lamakidesignsltd@gmail.com</p>
               </div>
             </div>
 
@@ -124,7 +124,7 @@ const Footer = () => {
         <div className="py-6 border-t border-background/20">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="text-background/80 text-sm">
-              © 2024 D Events Solutions. All rights reserved.
+              © 2025 LD Events Solutions. All rights reserved.
             </p>
             <div className="flex space-x-6 mt-4 md:mt-0">
               <a href="#" className="text-background/80 hover:text-background text-sm transition-colors duration-200">
