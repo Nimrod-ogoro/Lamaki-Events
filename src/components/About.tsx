@@ -36,7 +36,7 @@ const About = () => {
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-5xl font-bold text-foreground mb-4">
             About 
-            <span className="text-gradient"> D Events Solutions</span>
+            <span className="text-gradient"> Lamaki Events Solutions</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             Your trusted partner in creating extraordinary events that leave lasting impressions and exceed expectations.
@@ -50,7 +50,7 @@ const About = () => {
               Creating Unforgettable Moments Since 2014
             </h3>
             <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
-              At D Events Solutions, we believe every event is a story waiting to be told. With over a decade of experience in the events industry, we have mastered the art of transforming visions into reality.
+              At Lamaki Events Solutions, we believe every event is a story waiting to be told. With over a decade of experience in the events industry, we have mastered the art of transforming visions into reality.
             </p>
             <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
               Our team of dedicated professionals brings creativity, precision, and passion to every project. From intimate gatherings to large-scale corporate events, we handle every detail with care and expertise.
