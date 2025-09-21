@@ -1,11 +1,15 @@
+import { useRef } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Mail, Phone, MapPin, Clock } from 'lucide-react';
+import emailjs from '@emailjs/browser';
 
 const Contact = () => {
+  const formRef = useRef();
+
   const contactInfo = [
     {
       icon: Phone,
@@ -33,6 +37,27 @@ const Contact = () => {
     }
   ];
 
+  // Handle form submit with EmailJS
+  const sendEmail = (e) => {
+    e.preventDefault();
+
+    emailjs
+      .sendForm(
+        "service_ip5x6gl",     // 🔹 replace with EmailJS service ID
+        "template_rnjz7oq",    // 🔹 replace with EmailJS template ID
+        formRef.current,
+        "7bQSKiVHnehsPijB7"      // 🔹 replace with EmailJS public key
+      )
+      .then(
+        () => {
+          alert("Message sent successfully ✅");
+        },
+        (error) => {
+          alert("Message failed ❌ " + error.text);
+        }
+      );
+  };
+
   return (
     <section id="contact" className="py-20 bg-muted/30">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -57,44 +82,47 @@ const Contact = () => {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="firstName">First Name</Label>
-                  <Input id="firstName" placeholder="John" />
+              <form ref={formRef} onSubmit={sendEmail} className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="firstName">First Name</Label>
+                    <Input id="firstName" name="firstName" placeholder="John" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="lastName">Last Name</Label>
+                    <Input id="lastName" name="lastName" placeholder="Doe" />
+                  </div>
                 </div>
+                
                 <div className="space-y-2">
-                  <Label htmlFor="lastName">Last Name</Label>
-                  <Input id="lastName" placeholder="Doe" />
+                  <Label htmlFor="email">Email Address</Label>
+                  <Input id="email" name="email" type="email" placeholder="john@example.com" />
                 </div>
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="email">Email Address</Label>
-                <Input id="email" type="email" placeholder="john@example.com" />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="phone">Phone Number</Label>
-                <Input id="phone" type="tel" placeholder="(+254) 113 710584" />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="eventType">Event Type</Label>
-                <Input id="eventType" placeholder="Corporate Conference, Wedding, etc." />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="message">Tell us about your event</Label>
-                <Textarea 
-                  id="message" 
-                  placeholder="Please describe your event vision, expected guests, date preferences, and any special requirements..."
-                  className="min-h-[120px]"
-                />
-              </div>
-              
-              <Button className="w-full bg-primary hover:bg-primary/90" size="lg">
-                Send Message
-              </Button>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="phone">Phone Number</Label>
+                  <Input id="phone" name="phone" type="tel" placeholder="(+254) 113 710584" />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="eventType">Event Type</Label>
+                  <Input id="eventType" name="eventType" placeholder="Corporate Conference, Wedding, etc." />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="message">Tell us about your event</Label>
+                  <Textarea 
+                    id="message" 
+                    name="message"
+                    placeholder="Please describe your event vision, expected guests, date preferences, and any special requirements..."
+                    className="min-h-[120px]"
+                  />
+                </div>
+                
+                <Button type="submit" className="w-full bg-primary hover:bg-primary/90" size="lg">
+                  Send Message
+                </Button>
+              </form>
             </CardContent>
           </Card>
 
