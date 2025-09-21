@@ -1,8 +1,17 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router';
 import { CheckCircle, Users, Clock, Trophy } from 'lucide-react';
 
 const About = () => {
+  const navigate = useNavigate();
+  const scrollToSection = (id: string) => {
+    const section = document.getElementById(id);
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   const achievements = [
     { icon: Users, number: "500+", label: "Happy Clients" },
     { icon: Trophy, number: "50+", label: "Awards Won" },
@@ -57,10 +66,10 @@ const About = () => {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 mb-8">
-              <Button size="lg" className="bg-primary hover:bg-primary/90">
+              <Button size="lg" className="bg-primary hover:bg-primary/90" onClick={() => scrollToSection("contact")}>
                 Get Started
               </Button>
-              <Button variant="outline" size="lg">
+              <Button variant="outline" size="lg" onClick={() => navigate("/gallery")}>
                 View Portfolio
               </Button>
             </div>
