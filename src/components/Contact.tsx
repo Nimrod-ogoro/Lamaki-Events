@@ -26,7 +26,7 @@ const Contact = () => {
     {
       icon: MapPin,
       title: "Visit Us",
-      details: "Nairobi, Ruai ",
+      details: "Nairobi, Utawala ",
       subtitle: " 500M from Githunguri Junction"
     },
     {
