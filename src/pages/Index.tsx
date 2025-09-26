@@ -12,12 +12,13 @@ import { Helmet } from "react-helmet-async";
 const Index = () => {
   return (
     <>
-    <Helmet>
+    
+   
+    <div className="min-h-screen">
+      <Helmet>
             <meta name="google-site-verification" content="0YS0oTy2nfF5h2AVwaXy9yP-XGnRipda0ItQ3fiwl0U" />
         <title>LD Events</title>
       </Helmet>
-   
-    <div className="min-h-screen">
       <Header />
       <main>
         <Hero />
