@@ -5,7 +5,8 @@ import About from '@/components/About';
 import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
 import Portfolio from '@/components/Portfolio';
-import WhatsAppFloat from '@/components/WhatsappFloat';
+import WhatsAppFloat from '@/components/WhatsAppFloat';
+
 
 const Index = () => {
   return (
@@ -17,7 +18,7 @@ const Index = () => {
         <Portfolio />
         <About />
         <Contact />
-        <WhatsAppFloat />
+       <WhatsAppFloat/>
       </main>
       <Footer />
     </div>
