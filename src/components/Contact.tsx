@@ -32,7 +32,7 @@ const Contact = () => {
     {
       icon: Clock,
       title: "Business Hours",
-      details: "Mon-Fri: 9AM-6PM",
+      details: "Mon-Sat: 7:30AM-6PM",
       subtitle: "Weekend by appointment"
     }
   ];
