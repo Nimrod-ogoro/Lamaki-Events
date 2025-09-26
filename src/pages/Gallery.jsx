@@ -1,37 +1,65 @@
+// Gallery.jsx
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import Footer from "@/components/Footer";
+import useLazyVideo from "@/hooks/useLazyVideo"; // <-- custom hook for video lazy-load
 
 const events = [
   { id: 1, type: "image", src: "https://pub-9b875df7585a486d8e59955412f6b6d7.r2.dev/SaFi_Production-13.jpg", title: "Lamaki Events", desc: "Annual awards & dinner under the stars." },
   { id: 2, type: "video", src: "https://pub-9b875df7585a486d8e59955412f6b6d7.r2.dev/WhatsApp%20Video%202025-09-04%20at%2016.50.18_7bbf9e7e.mp4", title: "Lamaki Events", desc: "Luxury outdoor reception with live band." },
   { id: 3, type: "image", src: "https://pub-9b875df7585a486d8e59955412f6b6d7.r2.dev/SaFi_Production-15.jpg", title: "Lamaki Events", desc: "Stage lighting & sound showcase." },
-  { id: 4, type:"image",  src: "https://pub-9b875df7585a486d8e59955412f6b6d7.r2.dev/SaFi_Production-22.jpg", title: "Lamaki Events", desc: "Stage lighting & sound showcase." },
-    { id: 5, type:"image",  src: "https://pub-9b875df7585a486d8e59955412f6b6d7.r2.dev/SaFi_Production-25.jpg", title: "Lamaki Events", desc: "Stage lighting & sound showcase." },
-     { id: 6, type:"image",  src: "https://pub-9b875df7585a486d8e59955412f6b6d7.r2.dev/img5.jpg", title: "Lamaki Events", desc: "Stage lighting & sound showcase." },
-      { id: 7, type:"image",  src: "https://pub-9b875df7585a486d8e59955412f6b6d7.r2.dev/img8.jpg", title: "Lamaki Events", desc: "Stage lighting & sound showcase." },
-       { id: 8, type:"image",  src: "https://pub-9b875df7585a486d8e59955412f6b6d7.r2.dev/img9.jpg", title: "Lamaki Events", desc: "Stage lighting & sound showcase." },
-        { id: 9, type:"image",  src: "https://pub-9b875df7585a486d8e59955412f6b6d7.r2.dev/img6.jpg", title: "Lamaki Events", desc: "Stage lighting & sound showcase." },
-         { id: 10, type:"video",  src: "https://pub-9b875df7585a486d8e59955412f6b6d7.r2.dev/1000160597.mp4", title: "Lamaki Events", desc: "Stage lighting & sound showcase." },
-          { id: 11, type:"image",  src: "https://pub-9b875df7585a486d8e59955412f6b6d7.r2.dev/SaFi_Production-7.jpg", title: "Lamaki Events", desc: "Stage lighting & sound showcase." },
-           { id: 12, type:"image",  src: "https://pub-9b875df7585a486d8e59955412f6b6d7.r2.dev/SaFi_Production.jpg", title: "Lamaki Events", desc: "Stage lighting & sound showcase." },
-            { id: 13, type:"image",  src: "https://pub-9b875df7585a486d8e59955412f6b6d7.r2.dev/SaFi_Production-32.jpg", title: "Lamaki Events", desc: "Stage lighting & sound showcase." },
-             { id: 14, type:"image",  src: "https://pub-9b875df7585a486d8e59955412f6b6d7.r2.dev/SaFi_Production-39.jpg", title: "Lamaki Events", desc: "Stage lighting & sound showcase." },
-              { id: 15, type:"video",  src: "https://pub-9b875df7585a486d8e59955412f6b6d7.r2.dev/WhatsApp%20Video%202025-08-07%20at%2009.38.27_8aa5347a.mp4", title: "Lamaki Events", desc: "Stage lighting & sound showcase." },
-               { id: 16, type:"video",  src: "https://pub-9b875df7585a486d8e59955412f6b6d7.r2.dev/1000160854.mp4", title: "Lamaki Events", desc: "Stage lighting & sound showcase." },
-                { id: 17, type:"image",  src: "https://pub-9b875df7585a486d8e59955412f6b6d7.r2.dev/SaFi_Production-40.jpg", title: "Lamaki Events", desc: "Stage lighting & sound showcase." },
-                 { id: 18, type:"video",  src: "https://pub-9b875df7585a486d8e59955412f6b6d7.r2.dev/WhatsApp%20Video%202025-08-07%20at%2009.18.43_c64a0f35.mp4", title: "Lamaki Events", desc: "Stage lighting & sound showcase." },
-                  { id: 19, type:"image",  src: "https://pub-9b875df7585a486d8e59955412f6b6d7.r2.dev/SaFi_Production-9.jpg", title: " Lamaki Events", desc: "Stage lighting & sound showcase." },
-                   { id: 20, type:"image",  src: "https://pub-9b875df7585a486d8e59955412f6b6d7.r2.dev/9B6A8211.JPG", title: "Lamaki Events", desc: "Stage lighting & sound showcase." },
-                    { id: 21, type:"image",  src: "https://pub-9b875df7585a486d8e59955412f6b6d7.r2.dev/SaFi_Production-34.jpg", title: "Lamaki Events", desc: "Stage lighting & sound showcase." },
-                     { id: 22, type:"image",  src: "https://pub-9b875df7585a486d8e59955412f6b6d7.r2.dev/SaFi_Production-6.jpg", title: "Lamaki Events", desc: "Stage lighting & sound showcase." },
-                      { id: 23, type:"image",  src: "https://pub-9b875df7585a486d8e59955412f6b6d7.r2.dev/SaFi_Production-31.jpg", title: "Lamaki Events", desc: "Stage lighting & sound showcase." },
-                       { id: 24, type:"image",  src: "https://pub-9b875df7585a486d8e59955412f6b6d7.r2.dev/SaFi_Production-8.jpg", title: "Lamaki Events", desc: "Stage lighting & sound showcase." },
-
-  // ... keep your other items
+  { id: 4, type: "image", src: "https://pub-9b875df7585a486d8e59955412f6b6d7.r2.dev/SaFi_Production-22.jpg", title: "Lamaki Events", desc: "Stage lighting & sound showcase." },
+  { id: 5, type: "image", src: "https://pub-9b875df7585a486d8e59955412f6b6d7.r2.dev/SaFi_Production-25.jpg", title: "Lamaki Events", desc: "Stage lighting & sound showcase." },
+  { id: 6, type: "image", src: "https://pub-9b875df7585a486d8e59955412f6b6d7.r2.dev/img5.jpg", title: "Lamaki Events", desc: "Stage lighting & sound showcase." },
+  { id: 7, type: "image", src: "https://pub-9b875df7585a486d8e59955412f6b6d7.r2.dev/img8.jpg", title: "Lamaki Events", desc: "Stage lighting & sound showcase." },
+  { id: 8, type: "image", src: "https://pub-9b875df7585a486d8e59955412f6b6d7.r2.dev/img9.jpg", title: "Lamaki Events", desc: "Stage lighting & sound showcase." },
+  { id: 9, type: "image", src: "https://pub-9b875df7585a486d8e59955412f6b6d7.r2.dev/img6.jpg", title: "Lamaki Events", desc: "Stage lighting & sound showcase." },
+  { id: 10, type: "video", src: "https://pub-9b875df7585a486d8e59955412f6b6d7.r2.dev/1000160597.mp4", title: "Lamaki Events", desc: "Stage lighting & sound showcase." },
+  { id: 11, type: "image", src: "https://pub-9b875df7585a486d8e59955412f6b6d7.r2.dev/SaFi_Production-7.jpg", title: "Lamaki Events", desc: "Stage lighting & sound showcase." },
+  { id: 12, type: "image", src: "https://pub-9b875df7585a486d8e59955412f6b6d7.r2.dev/SaFi_Production.jpg", title: "Lamaki Events", desc: "Stage lighting & sound showcase." },
+  { id: 13, type: "image", src: "https://pub-9b875df7585a486d8e59955412f6b6d7.r2.dev/SaFi_Production-32.jpg", title: "Lamaki Events", desc: "Stage lighting & sound showcase." },
+  { id: 14, type: "image", src: "https://pub-9b875df7585a486d8e59955412f6b6d7.r2.dev/SaFi_Production-39.jpg", title: "Lamaki Events", desc: "Stage lighting & sound showcase." },
+  { id: 15, type: "video", src: "https://pub-9b875df7585a486d8e59955412f6b6d7.r2.dev/WhatsApp%20Video%202025-08-07%20at%2009.38.27_8aa5347a.mp4", title: "Lamaki Events", desc: "Stage lighting & sound showcase." },
+  { id: 16, type: "video", src: "https://pub-9b875df7585a486d8e59955412f6b6d7.r2.dev/1000160854.mp4", title: "Lamaki Events", desc: "Stage lighting & sound showcase." },
+  { id: 17, type: "image", src: "https://pub-9b875df7585a486d8e59955412f6b6d7.r2.dev/SaFi_Production-40.jpg", title: "Lamaki Events", desc: "Stage lighting & sound showcase." },
+  { id: 18, type: "video", src: "https://pub-9b875df7585a486d8e59955412f6b6d7.r2.dev/WhatsApp%20Video%202025-08-07%20at%2009.18.43_c64a0f35.mp4", title: "Lamaki Events", desc: "Stage lighting & sound showcase." },
+  { id: 19, type: "image", src: "https://pub-9b875df7585a486d8e59955412f6b6d7.r2.dev/SaFi_Production-9.jpg", title: "Lamaki Events", desc: "Stage lighting & sound showcase." },
+  { id: 20, type: "image", src: "https://pub-9b875df7585a486d8e59955412f6b6d7.r2.dev/9B6A8211.JPG", title: "Lamaki Events", desc: "Stage lighting & sound showcase." },
+  { id: 21, type: "image", src: "https://pub-9b875df7585a486d8e59955412f6b6d7.r2.dev/SaFi_Production-34.jpg", title: "Lamaki Events", desc: "Stage lighting & sound showcase." },
+  { id: 22, type: "image", src: "https://pub-9b875df7585a486d8e59955412f6b6d7.r2.dev/SaFi_Production-6.jpg", title: "Lamaki Events", desc: "Stage lighting & sound showcase." },
+  { id: 23, type: "image", src: "https://pub-9b875df7585a486d8e59955412f6b6d7.r2.dev/SaFi_Production-31.jpg", title: "Lamaki Events", desc: "Stage lighting & sound showcase." },
+  { id: 24, type: "image", src: "https://pub-9b875df7585a486d8e59955412f6b6d7.r2.dev/SaFi_Production-8.jpg", title: "Lamaki Events", desc: "Stage lighting & sound showcase." },
+  { id: 25, type: "video", src: "https://pub-06a2a441a00c4ef597b4f4f0cac7cddf.r2.dev/e-1.mp4", title: "Concert Night", desc: "" },
+  { id: 26, type: "video", src: "https://pub-06a2a441a00c4ef597b4f4f0cac7cddf.r2.dev/e-4.mp4", title: "Product Launch", desc: "" },
+  { id: 27, type: "video", src: "https://pub-06a2a441a00c4ef597b4f4f0cac7cddf.r2.dev/e-5.mp4", title: "Product Launch", desc: "" },
+  { id: 28, type: "video", src: "https://pub-06a2a441a00c4ef597b4f4f0cac7cddf.r2.dev/e-6.mp4", title: "Product Launch", desc: "" },
+  { id: 29, type: "video", src: "https://pub-06a2a441a00c4ef597b4f4f0cac7cddf.r2.dev/e-2.mp4", title: "Birthday Bash", desc: "" },
+  { id: 30, type: "video", src: "https://pub-06a2a441a00c4ef597b4f4f0cac7cddf.r2.dev/e-3.mp4", title: "Product Launch", desc: "" },
 ];
 
+/* ------------------------------------------------------------------ */
+/*  Lazy-video component (uses Intersection Observer via custom hook)  */
+/* ------------------------------------------------------------------ */
+function LazyVideo({ src }) {
+  const [videoRef, shouldLoad] = useLazyVideo();
+
+  return (
+    <video
+      ref={videoRef}
+      src={shouldLoad ? src : undefined}
+      style={{ width: "100%", height: 240, objectFit: "cover" }}
+      autoPlay
+      loop
+      muted
+      playsInline
+    />
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*                           Main Gallery Page                         */
+/* ------------------------------------------------------------------ */
 export default function Gallery() {
   const nav = useNavigate();
 
@@ -110,16 +138,10 @@ export default function Gallery() {
                     src={e.src}
                     alt={e.title}
                     style={{ width: "100%", height: 240, objectFit: "cover" }}
+                    loading="lazy"
                   />
                 ) : (
-                  <video
-                    src={e.src}
-                    style={{ width: "100%", height: 240, objectFit: "cover" }}
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                  />
+                  <LazyVideo src={e.src} />
                 )}
 
                 {/* ==== TEXT CONTENT ==== */}

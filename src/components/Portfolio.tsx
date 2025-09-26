@@ -2,10 +2,21 @@ import { FC } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
-const events = [
-  { id: 1, img: "https://pub-9b875df7585a486d8e59955412f6b6d7.r2.dev/SaFi_Production-10.jpg", title: "Corporate Gala" },
-  { id: 2, img: "https://pub-9b875df7585a486d8e59955412f6b6d7.r2.dev/SaFi_Production-16.jpg", title: "Wedding Setup" },
-  { id: 3, img: "https://pub-9b875df7585a486d8e59955412f6b6d7.r2.dev/SaFi_Production-26.jpg", title: "Concert Night" },
+type Event = {
+  id: number;
+  type: "image" | "video";
+  src: string;
+  title: string;
+};
+
+const events: Event[] = [
+  { id: 1, type: "image", src: "https://pub-9b875df7585a486d8e59955412f6b6d7.r2.dev/SaFi_Production-10.jpg", title: "Corporate Gala" },
+  { id: 2, type: "image", src: "https://pub-9b875df7585a486d8e59955412f6b6d7.r2.dev/SaFi_Production-16.jpg", title: "Wedding Setup" },
+
+  { id: 3, type: "image", src: "https://pub-9b875df7585a486d8e59955412f6b6d7.r2.dev/SaFi_Production-12.jpg", title: "Product Launch" },
+  { id: 4, type: "image", src: "https://pub-9b875df7585a486d8e59955412f6b6d7.r2.dev/SaFi_Production-14.jpg", title: "Outdoor Festival" },
+ 
+
 ];
 
 const Portfolio: FC = () => {
@@ -23,7 +34,7 @@ const Portfolio: FC = () => {
               className="relative group rounded-xl overflow-hidden shadow-lg"
             >
               <img
-                src={event.img}
+                src={event.src}
                 alt={event.title}
                 className="w-full h-72 object-cover transition-transform duration-300 group-hover:scale-105"
               />

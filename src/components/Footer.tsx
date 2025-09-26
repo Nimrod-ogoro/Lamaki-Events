@@ -2,9 +2,9 @@ import { Mail, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin } from 'luc
 
 const Footer = () => {
   const socialLinks = [
-    { icon: Facebook, href: "https://www.facebook.com/LamakiDesignsandConstruction", label: "Facebook" },
+    { icon: Facebook, href: "https://www.facebook.com/LamakiDesignsandConstruction ", label: "Facebook" },
     { icon: Twitter, href: "#", label: "Twitter" },
-    { icon: Instagram, href: "https://www.instagram.com/lamaki_designs/", label: "Instagram" },
+    { icon: Instagram, href: "https://www.instagram.com/lamaki_designs/ ", label: "Instagram" },
     { icon: Linkedin, href: "#", label: "LinkedIn" }
   ];
 
@@ -36,7 +36,7 @@ const Footer = () => {
             <div className="mb-6">
               <img 
                 src="/lovable-uploads/68ba5552-b7e1-4083-85ec-a1ac6262d64b.png" 
-                alt="D Events Solutions" 
+                alt="Lamaki Designs" 
                 className="h-12 w-auto mb-4 brightness-0 invert"
               />
               <p className="text-background/80 leading-relaxed">
@@ -67,7 +67,7 @@ const Footer = () => {
                 <li key={index}>
                   <a 
                     href={link.href}
-                    className="text-background/80 hover:text-background hover:text-primary transition-colors duration-200"
+                    className="text-background/80 hover:text-primary transition-colors duration-200"
                   >
                     {link.name}
                   </a>
@@ -91,6 +91,21 @@ const Footer = () => {
           {/* Contact Info */}
           <div>
             <h3 className="text-lg font-semibold mb-6">Contact Info</h3>
+
+            {/* Interactive Map */}
+            <div className="mb-4 rounded-lg overflow-hidden" style={{ aspectRatio: '16/9' }}>
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.8260649096237!2d36.98881607496567!3d-1.2778556987099907!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f6b4d8c0516e9%3A0x417dc538f5da6fad!2sLamaki%20Designs%20and%20Construction!5e0!3m2!1sen!2ske!4v1758867840062!5m2!1sen!2ske"  
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Lamaki Designs Location"
+              />
+            </div>
+
             <div className="space-y-4">
               <div className="flex items-start space-x-3">
                 <MapPin className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
@@ -134,7 +149,7 @@ const Footer = () => {
                 Terms of Service
               </a>
               <a href="#" className="text-background/80 hover:text-background text-sm transition-colors duration-200">
-                Cookie Polic
+                Cookie Policy
               </a>
             </div>
           </div>
