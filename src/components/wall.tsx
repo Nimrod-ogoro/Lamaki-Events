@@ -1,49 +1,29 @@
-// Wall.tsx
-import { useEffect, useRef } from "react";
+// StaticWall.tsx
+import { useEffect, useState } from "react";
 
-declare global {
-  interface Window {
-    formbricks?: {
-      renderWall: (opts: {
-        environmentId: string;
-        apiHost: string;
-        containerId: string;
-      }) => void;
-    };
-  }
-}
+type R = { author: string; rating: number; text: string };
 
-export default function ReviewsWall(): JSX.Element {
-  const containerRef = useRef<HTMLDivElement>(null);
+export default function StaticWall() {
+  const [list, setList] = useState<R[]>([]);
 
   useEffect(() => {
-    // 1. load the wall bundle
-    const script = document.createElement("script");
-    script.src = "https://unpkg.com/@formbricks/js@latest/dist/wall.es.js";
-    script.type = "module";
-
-    script.onload = () => {
-      if (window.formbricks?.renderWall && containerRef.current) {
-        window.formbricks.renderWall({
-          environmentId: "cmgg8xfn53b9dvm01frqkz7ld",
-          apiHost: "https://app.formbricks.com",
-          containerId: containerRef.current.id,
-        });
-      }
-    };
-
-    document.body.appendChild(script);
-
-    return () => {
-      document.body.removeChild(script);
-    };
+    fetch("/reviews.json")
+      .then((r) => r.json())
+      .then(setList);
   }, []);
 
   return (
-    <div
-      id="fb-wall"
-      ref={containerRef}
-      style={{ minHeight: 600 }} /* optional loader space */
-    />
+    <ul className="space-y-4">
+      {list.map((r, i) => (
+        <li
+          key={i}
+          className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm"
+        >
+          <div className="mb-1 font-semibold text-slate-800">{r.author}</div>
+          <div className="mb-2 text-amber-400">{"★".repeat(r.rating)}</div>
+          <p className="text-slate-600">{r.text}</p>
+        </li>
+      ))}
+    </ul>
   );
 }

@@ -14,7 +14,7 @@ const queryClient = new QueryClient();
 const App = () => {
   useEffect(() => {
     formbricks.setup({
-      environmentId: "cmgg8xfn53b9dvm01frqkz7ld",
+      environmentId: "ccmgg8zbze5ao4wx01k20cryny",
       appUrl: "https://app.formbricks.com",
     });
   }, []);
