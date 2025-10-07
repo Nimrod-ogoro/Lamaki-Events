@@ -1,10 +1,10 @@
-export default function Reviews() {
+import ReviewsWall from "./wall";
+
+export default function Home() {
   return (
-    <iframe
-      src="https://wall.formbricks.com/cmgg8xfn53b9dvm01frqkz7ld"
-      width="100%"
-      height="600"
-      frameBorder="0"
-    />
+    <>
+      <h1>What our customers say</h1>
+      <ReviewsWall />
+    </>
   );
 }
