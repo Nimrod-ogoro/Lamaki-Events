@@ -20,7 +20,7 @@ const Contact = () => {
     {
       icon: Mail,
       title: "Email Us", 
-      details: "lamakidesignsltd@gmail.com",
+      details: "ldeventssolutions@gmail.com",
       subtitle: "Quick response guaranteed"
     },
     {

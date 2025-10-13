@@ -4,8 +4,8 @@ const Footer = () => {
   const socialLinks = [
     { icon: Facebook, href: "https://www.facebook.com/LamakiDesignsandConstruction ", label: "Facebook" },
     { icon: Twitter, href: "#", label: "Twitter" },
-    { icon: Instagram, href: "https://www.instagram.com/lamaki_designs/ ", label: "Instagram" },
-    { icon: Linkedin, href: "#", label: "LinkedIn" }
+    { icon: Instagram, href: "https://www.instagram.com/ld_sounds_lighting/ ", label: "Instagram" },
+    { icon: Linkedin, href: "https://www.linkedin.com/company/lamaki-desings-and-events/about/?viewAsMember=true", label: "LinkedIn" }
   ];
 
   const quickLinks = [
