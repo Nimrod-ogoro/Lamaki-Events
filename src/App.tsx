@@ -12,51 +12,54 @@ import Gallery from "./pages/Gallery";
 const queryClient = new QueryClient();
 
 /* -------------------------------------------------------------- */
-/* ✅ Initialize Formbricks                                       */
+/* ✅ Initialize Formbricks (async-safe)                          */
 /* -------------------------------------------------------------- */
 const useFormbricks = () => {
   useEffect(() => {
-    try {
-      formbricks.init({
-        environmentId: import.meta.env.VITE_FORMBRICKS_ENVIRONMENT_ID!,
-        apiHost: import.meta.env.VITE_FORMBRICKS_API_HOST!,
-      });
-      console.log("✅ Formbricks initialized successfully");
+    const initFormbricks = async () => {
+      try {
+        await formbricks.init({
+          environmentId: import.meta.env.VITE_FORMBRICKS_ENVIRONMENT_ID!,
+          apiHost: import.meta.env.VITE_FORMBRICKS_API_HOST!,
+        });
+        console.log("✅ Formbricks initialized successfully");
 
-      // Optional startup event
-      formbricks.track("app_started", {
-        hiddenFields: { status: "initialized" },
-      });
-    } catch (error) {
-      console.error("❌ Formbricks initialization failed:", error);
-    }
+        // ✅ Track after successful initialization
+        formbricks.track("app_started", {
+          hiddenFields: { status: "initialized" },
+        });
+
+        // ✅ Optionally auto-launch a form popup
+        // Replace "feedback-form" with your actual form ID from Formbricks
+        // setTimeout(() => formbricks.startForm("feedback-form"), 5000);
+      } catch (error) {
+        console.error("❌ Formbricks initialization failed:", error);
+      }
+    };
+
+    initFormbricks();
   }, []);
 };
 
 /* -------------------------------------------------------------- */
-/* ✅ Strongly Typed Track Helper                                 */
-/* -------------------------------------------------------------- */
-const trackEvent = (
-  eventName: string,
-  hiddenFields: Record<string | number, string | number | string[]> = {}
-) => {
-  try {
-    formbricks.track(eventName, { hiddenFields });
-  } catch (err) {
-    console.warn("⚠️ Formbricks track failed:", err);
-  }
-};
-
-/* -------------------------------------------------------------- */
-/* ✅ Track Route Changes                                         */
+/* ✅ Track Route Changes AFTER Formbricks Initialization          */
 /* -------------------------------------------------------------- */
 const usePageTracking = () => {
   const location = useLocation();
 
   useEffect(() => {
-    // Wrap the path in `hiddenFields` to match the SDK typing
-    trackEvent("page_view", { path: location.pathname });
-    console.log("📍 Tracked page view:", location.pathname);
+    const trackPageView = async () => {
+      try {
+        await formbricks.track("page_view", {
+          hiddenFields: { path: location.pathname },
+        });
+        console.log("📍 Tracked page view:", location.pathname);
+      } catch (error) {
+        console.warn("⚠️ Formbricks not ready yet, event queued");
+      }
+    };
+
+    trackPageView();
   }, [location]);
 };
 
@@ -67,10 +70,10 @@ const AppContent = () => {
   useFormbricks();
   usePageTracking();
 
-  // Optional: auto-show a form after 10 seconds
+  // Optional: manually trigger form popup
   // useEffect(() => {
   //   const timer = setTimeout(() => {
-  //     formbricks.startForm("feedback-form");
+  //     formbricks.startForm("your-form-id-here");
   //   }, 10000);
   //   return () => clearTimeout(timer);
   // }, []);
@@ -102,5 +105,6 @@ const App = () => {
 };
 
 export default App;
+
 
 
