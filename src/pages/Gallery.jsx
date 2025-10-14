@@ -1,10 +1,36 @@
 // Gallery.jsx
-import React from "react";
+import React, { Suspense } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import Footer from "@/components/Footer";
-import useLazyVideo from "@/hooks/useLazyVideo"; // <-- custom hook for video lazy-load
 
+/* -------------------------------------------------------------- */
+/* 1.  Lazy-load the heavy “video hook” only when Gallery mounts  */
+/* -------------------------------------------------------------- */
+const LazyVideoHook = React.lazy(() => import("@/hooks/useLazyVideo"));
+
+/* -------------------------------------------------------------- */
+/* 2.  Video component that uses the lazy-loaded hook             */
+/* -------------------------------------------------------------- */
+function LazyVideo({ src }) {
+  const [videoRef, shouldLoad] = LazyVideoHook(); // hook now available
+  return (
+    <video
+      ref={videoRef}
+      src={shouldLoad ? src : undefined}
+      style={{ width: "100%", height: 240, objectFit: "cover" }}
+      autoPlay
+      loop
+      muted
+      playsInline
+      preload="none"
+    />
+  );
+}
+
+/* -------------------------------------------------------------- */
+/* 3.  FULL events array – every link preserved exactly           */
+/* -------------------------------------------------------------- */
 const events = [
   { id: 1, type: "image", src: "https://pub-9b875df7585a486d8e59955412f6b6d7.r2.dev/SaFi_Production-13.jpg", title: "Lamaki Events", desc: "Annual awards & dinner under the stars." },
   { id: 2, type: "video", src: "https://pub-9b875df7585a486d8e59955412f6b6d7.r2.dev/WhatsApp%20Video%202025-09-04%20at%2016.50.18_7bbf9e7e.mp4", title: "Lamaki Events", desc: "Luxury outdoor reception with live band." },
@@ -38,28 +64,9 @@ const events = [
   { id: 30, type: "video", src: "https://pub-06a2a441a00c4ef597b4f4f0cac7cddf.r2.dev/e-3.mp4", title: "Product Launch", desc: "" },
 ];
 
-/* ------------------------------------------------------------------ */
-/*  Lazy-video component (uses Intersection Observer via custom hook)  */
-/* ------------------------------------------------------------------ */
-function LazyVideo({ src }) {
-  const [videoRef, shouldLoad] = useLazyVideo();
-
-  return (
-    <video
-      ref={videoRef}
-      src={shouldLoad ? src : undefined}
-      style={{ width: "100%", height: 240, objectFit: "cover" }}
-      autoPlay
-      loop
-      muted
-      playsInline
-    />
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/*                           Main Gallery Page                         */
-/* ------------------------------------------------------------------ */
+/* -------------------------------------------------------------- */
+/* 4.  Gallery page                                               */
+/* -------------------------------------------------------------- */
 export default function Gallery() {
   const nav = useNavigate();
 
@@ -132,19 +139,33 @@ export default function Gallery() {
                   evt.currentTarget.style.boxShadow = "0 4px 20px rgba(0,0,0,.08)";
                 }}
               >
-                {/* ==== IMAGE OR VIDEO ==== */}
-                {e.type === "image" ? (
+                {/* ---- IMAGE ---- */}
+                {e.type === "image" && (
                   <img
                     src={e.src}
                     alt={e.title}
-                    style={{ width: "100%", height: 240, objectFit: "cover" }}
                     loading="lazy"
+                    style={{ width: "100%", height: 240, objectFit: "cover" }}
                   />
-                ) : (
-                  <LazyVideo src={e.src} />
                 )}
 
-                {/* ==== TEXT CONTENT ==== */}
+                {/* ---- VIDEO ---- */}
+                {e.type === "video" && (
+                  <Suspense
+                    fallback={
+                      <div
+                        style={{
+                          width: "100%",
+                          height: 240,
+                          background: "#e5e7eb",
+                        }}
+                      />
+                    }
+                  >
+                    <LazyVideo src={e.src} />
+                  </Suspense>
+                )}
+
                 <div style={{ padding: "20px 24px" }}>
                   <h3
                     style={{
