@@ -1,37 +1,31 @@
-// Gallery.jsx
+// src/pages/Gallery.tsx
 import React, { Suspense } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import Footer from "@/components/Footer";
 
 /* -------------------------------------------------------------- */
-/* 1.  Lazy-load the heavy “video hook” only when Gallery mounts  */
+/* 1.  Lazy-load the video component only when needed             */
 /* -------------------------------------------------------------- */
-const LazyVideoHook = React.lazy(() => import("@/hooks/useLazyVideo"));
+const LazyVideo = React.lazy(() =>
+  import("@/components/LazyVideo").then((mod) => ({ default: mod.default }))
+);
 
 /* -------------------------------------------------------------- */
-/* 2.  Video component that uses the lazy-loaded hook             */
+/* 2.  Event item interface                                       */
 /* -------------------------------------------------------------- */
-function LazyVideo({ src }) {
-  const [videoRef, shouldLoad] = LazyVideoHook(); // hook now available
-  return (
-    <video
-      ref={videoRef}
-      src={shouldLoad ? src : undefined}
-      style={{ width: "100%", height: 240, objectFit: "cover" }}
-      autoPlay
-      loop
-      muted
-      playsInline
-      preload="none"
-    />
-  );
+interface EventItem {
+  id: number;
+  type: "image" | "video";
+  src: string;
+  title: string;
+  desc: string;
 }
 
 /* -------------------------------------------------------------- */
-/* 3.  FULL events array – every link preserved exactly           */
+/* 3.  Events array (all original links preserved)                 */
 /* -------------------------------------------------------------- */
-const events = [
+const events: EventItem[] = [
   { id: 1, type: "image", src: "https://pub-9b875df7585a486d8e59955412f6b6d7.r2.dev/SaFi_Production-13.jpg", title: "Lamaki Events", desc: "Annual awards & dinner under the stars." },
   { id: 2, type: "video", src: "https://pub-9b875df7585a486d8e59955412f6b6d7.r2.dev/WhatsApp%20Video%202025-09-04%20at%2016.50.18_7bbf9e7e.mp4", title: "Lamaki Events", desc: "Luxury outdoor reception with live band." },
   { id: 3, type: "image", src: "https://pub-9b875df7585a486d8e59955412f6b6d7.r2.dev/SaFi_Production-15.jpg", title: "Lamaki Events", desc: "Stage lighting & sound showcase." },
@@ -65,7 +59,7 @@ const events = [
 ];
 
 /* -------------------------------------------------------------- */
-/* 4.  Gallery page                                               */
+/* 4.  Gallery Component                                          */
 /* -------------------------------------------------------------- */
 export default function Gallery() {
   const nav = useNavigate();
@@ -97,7 +91,11 @@ export default function Gallery() {
           }}
           onClick={() => nav("/")}
         >
-          <img src="/LD-Logo.png" alt="Logo" style={{ height: 40, marginRight: 8 }} />
+          <img
+            src="/LD-Logo.png"
+            alt="Logo"
+            style={{ height: 40, marginRight: 8 }}
+          />
           Lamaki Designs
         </div>
         <Button variant="outline" onClick={() => nav("/")}>
@@ -131,15 +129,16 @@ export default function Gallery() {
                   cursor: "pointer",
                 }}
                 onMouseEnter={(evt) => {
-                  evt.currentTarget.style.transform = "translateY(-6px)";
-                  evt.currentTarget.style.boxShadow = "0 8px 28px rgba(0,0,0,.12)";
+                  const el = evt.currentTarget as HTMLDivElement;
+                  el.style.transform = "translateY(-6px)";
+                  el.style.boxShadow = "0 8px 28px rgba(0,0,0,.12)";
                 }}
                 onMouseLeave={(evt) => {
-                  evt.currentTarget.style.transform = "translateY(0)";
-                  evt.currentTarget.style.boxShadow = "0 4px 20px rgba(0,0,0,.08)";
+                  const el = evt.currentTarget as HTMLDivElement;
+                  el.style.transform = "translateY(0)";
+                  el.style.boxShadow = "0 4px 20px rgba(0,0,0,.08)";
                 }}
               >
-                {/* ---- IMAGE ---- */}
                 {e.type === "image" && (
                   <img
                     src={e.src}
@@ -149,7 +148,6 @@ export default function Gallery() {
                   />
                 )}
 
-                {/* ---- VIDEO ---- */}
                 {e.type === "video" && (
                   <Suspense
                     fallback={
@@ -177,7 +175,9 @@ export default function Gallery() {
                   >
                     {e.title}
                   </h3>
-                  <p style={{ color: "#475569", fontSize: "0.95rem" }}>{e.desc}</p>
+                  <p style={{ color: "#475569", fontSize: "0.95rem" }}>
+                    {e.desc}
+                  </p>
                 </div>
               </div>
             ))}
@@ -189,3 +189,4 @@ export default function Gallery() {
     </>
   );
 }
+
