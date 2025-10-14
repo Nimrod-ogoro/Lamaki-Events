@@ -44,7 +44,7 @@ const Portfolio: FC = () => {
                 <Button
                   variant="default"
                   className="bg-primary hover:bg-primary/90"
-                  onClick={() => nav("/Gallery")}
+                  onClick={() => nav("/gallery")}
                 >
                   View More
                 </Button>
