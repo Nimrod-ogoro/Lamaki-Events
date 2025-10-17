@@ -1,3 +1,7 @@
+# robots.txt for ldevents.co.ke
+# Allow all crawlers to index the entire site
+# Hosted on Vercel: https://ldevents.co.ke
+
 User-agent: Googlebot
 Allow: /
 
@@ -12,3 +16,6 @@ Allow: /
 
 User-agent: *
 Allow: /
+Crawl-delay: 5
+
+Sitemap: https://ldevents.co.ke/sitemap.xml
