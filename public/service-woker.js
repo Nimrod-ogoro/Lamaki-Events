@@ -7,52 +7,65 @@ const ASSETS_TO_CACHE = [
   "/assets/logo.png"
 ];
 
-// Install: Cache essential files
-self.addEventListener("install", event => {
+// ✅ Install: Cache essential files
+self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS_TO_CACHE))
+    caches.open(CACHE_NAME).then((cache) => {
+      console.log("🧱 Caching essential assets...");
+      return cache.addAll(ASSETS_TO_CACHE);
+    })
   );
   self.skipWaiting();
 });
 
-// Activate: Cleanup old caches
-self.addEventListener("activate", event => {
+// ✅ Activate: Cleanup old caches
+self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(keys.map(key => key !== CACHE_NAME && caches.delete(key)))
+    caches.keys().then((keys) =>
+      Promise.all(
+        keys.map((key) => {
+          if (key !== CACHE_NAME) {
+            console.log(`🧹 Deleting old cache: ${key}`);
+            return caches.delete(key);
+          }
+        })
+      )
     )
   );
   self.clients.claim();
 });
 
-// Fetch: Cache-first for images/videos, network-first for others
-self.addEventListener("fetch", event => {
+// ✅ Fetch: cache-first for images/videos, network-first for everything else
+self.addEventListener("fetch", (event) => {
   const { request } = event;
 
   // Only handle GET requests
   if (request.method !== "GET") return;
 
-  // For images/videos → cache-first
+  // Skip non-HTTP(s) requests (e.g., chrome-extension://)
+  if (!request.url.startsWith("http")) return;
+
+  // Cache-first for images and videos
   if (request.destination === "image" || request.destination === "video") {
     event.respondWith(
-      caches.match(request).then(cached =>
-        cached ||
-        fetch(request).then(response => {
-          const cloned = response.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put(request, cloned));
+      caches.match(request).then((cached) => {
+        if (cached) return cached;
+        return fetch(request).then((response) => {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(request, clone));
           return response;
-        })
-      )
+        });
+      })
     );
     return;
   }
 
-  // For other requests → network-first
+  // Network-first for all other requests
   event.respondWith(
     fetch(request)
-      .then(response => {
-        const cloned = response.clone();
-        caches.open(CACHE_NAME).then(cache => cache.put(request, cloned));
+      .then((response) => {
+        const clone = response.clone();
+        caches.open(CACHE_NAME).then((cache) => cache.put(request, clone));
         return response;
       })
       .catch(() => caches.match(request))

@@ -1,7 +1,7 @@
 {
   "rewrites": [
     {
-      "source": "/(service-worker.js|sitemap.xml|robots.txt)",
+      "source": "/(service-worker.js|sitemap.xml|robots.txt|manifest.json)",
       "destination": "/$1"
     },
     {
@@ -10,3 +10,4 @@
     }
   ]
 }
+
