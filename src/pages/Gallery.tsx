@@ -4,14 +4,14 @@ import { Button } from "@/components/ui/button";
 import Footer from "@/components/Footer";
 
 /* -------------------------------------------------------------- */
-/* 1.  Lazy-load the video component only when needed             */
+/* 1. Lazy-load video component only when needed                   */
 /* -------------------------------------------------------------- */
 const LazyVideo = React.lazy(() =>
   import("@/components/LazyVideo").then((mod) => ({ default: mod.default }))
 );
 
 /* -------------------------------------------------------------- */
-/* 2.  Event item interface                                       */
+/* 2. Event item interface                                         */
 /* -------------------------------------------------------------- */
 interface EventItem {
   id: number;
@@ -22,7 +22,7 @@ interface EventItem {
 }
 
 /* -------------------------------------------------------------- */
-/* 3.  Events array (all links preserved)                         */
+/* 3. Events array (links preserved)                               */
 /* -------------------------------------------------------------- */
 const events: EventItem[] = [
   { id: 1, type: "image", src: "https://pub-9b875df7585a486d8e59955412f6b6d7.r2.dev/SaFi_Production-13.jpg", title: "Lamaki Events", desc: "Annual awards & dinner under the stars." },
@@ -58,7 +58,7 @@ const events: EventItem[] = [
 ];
 
 /* -------------------------------------------------------------- */
-/* 4. Delayed Lazy Image Loader (2s delay after in-view)           */
+/* 4. Delayed Lazy Image Loader (2s after in-view + smooth fade)   */
 /* -------------------------------------------------------------- */
 const DelayedImage: React.FC<{ src: string; alt: string }> = ({ src, alt }) => {
   const [visible, setVisible] = useState(false);
@@ -69,12 +69,12 @@ const DelayedImage: React.FC<{ src: string; alt: string }> = ({ src, alt }) => {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            setTimeout(() => setVisible(true), 2000); // 2s delay
+            setTimeout(() => setVisible(true), 2000); // 2-second delay
             observer.disconnect();
           }
         });
       },
-      { threshold: 0.1 }
+      { rootMargin: "200px" } // preload slightly before view
     );
 
     if (ref.current) observer.observe(ref.current);
@@ -82,13 +82,30 @@ const DelayedImage: React.FC<{ src: string; alt: string }> = ({ src, alt }) => {
   }, []);
 
   return (
-    <div ref={ref} style={{ width: "100%", height: 240, background: "#e5e7eb" }}>
+    <div
+      ref={ref}
+      style={{
+        width: "100%",
+        height: 240,
+        background: "#f3f4f6",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
       {visible && (
         <img
           src={src}
           alt={alt}
           loading="lazy"
-          style={{ width: "100%", height: "100%", objectFit: "cover" }}
+          decoding="async"
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            opacity: visible ? 1 : 0,
+            transition: "opacity 0.8s ease-in-out",
+          }}
         />
       )}
     </div>
