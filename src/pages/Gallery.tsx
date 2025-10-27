@@ -1,5 +1,4 @@
-// src/pages/Gallery.tsx
-import React, { Suspense } from "react";
+import React, { Suspense, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import Footer from "@/components/Footer";
@@ -23,7 +22,7 @@ interface EventItem {
 }
 
 /* -------------------------------------------------------------- */
-/* 3.  Events array (all original links preserved)                 */
+/* 3.  Events array (all links preserved)                         */
 /* -------------------------------------------------------------- */
 const events: EventItem[] = [
   { id: 1, type: "image", src: "https://pub-9b875df7585a486d8e59955412f6b6d7.r2.dev/SaFi_Production-13.jpg", title: "Lamaki Events", desc: "Annual awards & dinner under the stars." },
@@ -59,7 +58,45 @@ const events: EventItem[] = [
 ];
 
 /* -------------------------------------------------------------- */
-/* 4.  Gallery Component                                          */
+/* 4. Delayed Lazy Image Loader (2s delay after in-view)           */
+/* -------------------------------------------------------------- */
+const DelayedImage: React.FC<{ src: string; alt: string }> = ({ src, alt }) => {
+  const [visible, setVisible] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setTimeout(() => setVisible(true), 2000); // 2s delay
+            observer.disconnect();
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div ref={ref} style={{ width: "100%", height: 240, background: "#e5e7eb" }}>
+      {visible && (
+        <img
+          src={src}
+          alt={alt}
+          loading="lazy"
+          style={{ width: "100%", height: "100%", objectFit: "cover" }}
+        />
+      )}
+    </div>
+  );
+};
+
+/* -------------------------------------------------------------- */
+/* 5. Gallery Component                                            */
 /* -------------------------------------------------------------- */
 export default function Gallery() {
   const nav = useNavigate();
@@ -91,11 +128,7 @@ export default function Gallery() {
           }}
           onClick={() => nav("/")}
         >
-          <img
-            src="/LD-Logo.png"
-            alt="Logo"
-            style={{ height: 40, marginRight: 8 }}
-          />
+          <img src="/LD-Logo.png" alt="Logo" style={{ height: 40, marginRight: 8 }} />
           Lamaki Designs
         </div>
         <Button variant="outline" onClick={() => nav("/")}>
@@ -139,15 +172,7 @@ export default function Gallery() {
                   el.style.boxShadow = "0 4px 20px rgba(0,0,0,.08)";
                 }}
               >
-                {e.type === "image" && (
-                  <img
-                    src={e.src}
-                    alt={e.title}
-                    loading="lazy"
-                    style={{ width: "100%", height: 240, objectFit: "cover" }}
-                  />
-                )}
-
+                {e.type === "image" && <DelayedImage src={e.src} alt={e.title} />}
                 {e.type === "video" && (
                   <Suspense
                     fallback={
@@ -175,9 +200,7 @@ export default function Gallery() {
                   >
                     {e.title}
                   </h3>
-                  <p style={{ color: "#475569", fontSize: "0.95rem" }}>
-                    {e.desc}
-                  </p>
+                  <p style={{ color: "#475569", fontSize: "0.95rem" }}>{e.desc}</p>
                 </div>
               </div>
             ))}
@@ -189,4 +212,3 @@ export default function Gallery() {
     </>
   );
 }
-
