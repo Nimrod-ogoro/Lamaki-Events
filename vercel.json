@@ -1,4 +1,16 @@
 {
+  "redirects": [
+    {
+      "source": "http://ldevents.co.ke/:path*",
+      "destination": "https://ldevents.co.ke/:path*",
+      "permanent": true
+    },
+    {
+      "source": "https://www.ldevents.co.ke/:path*",
+      "destination": "https://ldevents.co.ke/:path*",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/(service-worker.js|sitemap.xml|robots.txt|manifest.json)",
@@ -10,3 +22,4 @@
     }
   ]
 }
+
